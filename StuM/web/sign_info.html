@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>班级信息</title>
+    <link rel="stylesheet" type="text/css" href="./addClass_files/reset.css">
+    <link rel="stylesheet" type="text/css" href="./addClass_files/thems.css">
+    <link rel="stylesheet" type="text/css" href="./addClass_files/responsive.css">
+    <link rel="stylesheet" type="text/css" href="./addClass_files/course.css">
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <style>
+        table{
+            border: black 1px solid;
+            background: black;
+        }
+        tr{
+            border: blue 1px solid;
+        }
+        th{
+            background: white;
+            padding: 5px;
+        }
+        td{
+            background: white;
+            padding: 5px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="header">
+    <div class="head clearfix">
+        <div class="logo">
+
+        </div>
+        <div class="nav_m" style="height:61px">
+            <div class="n_icon">导航栏</div>
+            <ul class="nav clearfix">
+                <li>
+                    <a href="file:///D:/public/%E7%B4%A0%E6%9D%90/html/index.html">班级信息</a>
+                </li>
+                <li>
+                    <a href="file:///D:/public/%E7%B4%A0%E6%9D%90/html/addClass.html">添加班级</a>
+                </li>
+                <li>
+                    <a href="file:///D:/public/%E7%B4%A0%E6%9D%90/html/addClass.html">添加签到</a>
+                </li>
+                <li class="now">
+                    <a href="file:///D:/public/%E7%B4%A0%E6%9D%90/html/addClass.html">查看签到</a>
+                </li>
+                <li>
+                    <a href="file:///D:/public/%E7%B4%A0%E6%9D%90/html/contact.html">退出登陆</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div style="padding: 40px 180px;">
+    <table id="table" style="float: left;">
+        <thead>
+            <tr>
+                <th>签到Id</th>
+                <th>签到名称</th>
+                <th>老师名称</th>
+                <th>班级名称</th>
+                <th>签到码</th>
+                <th>签到人数</th>
+                <th>签到状态</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <table id="table2" style="float: right; display: block">
+        <thead>
+        <tr>
+            <th>学生ID</th>
+            <th>学生名字</th>
+            <th style="width: 106.8px;">账户</th>
+            <th>签到情况</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+</body>
+<script>
+    function f() {
+        // var json=[
+        //     {"sign_id":"1", "teacher_id":12345, "class_id":2203, "sign_number":23543, "sign_name":"第一次数学签到", "sign_student":25, "sign_time":0}
+        // ];
+        let teacher = JSON.parse(localStorage.getItem("teacher"));
+        let teacherName = teacher.Name;
+        let teacherTid = teacher.Tid;
+        $.ajax({
+            url: "signInfo",
+            type: "POST",
+            data: {teacherTid},
+            success: function (msg) {
+                let json = JSON.parse(msg);
+                if (json.flag == "success") {
+                    let classInfo = json.data;
+                    for (let s = 0; s < classInfo.length; s++) {
+                        let signId = classInfo[s].sign_id;
+                        let signName = classInfo[s].sign_name;
+                        let className = classInfo[s].className;
+                        let signNumber = classInfo[s].sign_number;
+                        let sumSign = classInfo[s].sumSignNumber;
+                        let class_id = classInfo[s].class_id;
+                        let signTime = classInfo[s].sign_time == 0 ? "进行中" : "已结束";
+                        localStorage.setItem(signId,classInfo[s]);
+                        let row = "<tr><td id='signId'>" + signId + "</td><td>" + signName + "</td><td>" + teacherName + "</td><td>" + className + "</td><td>" + signNumber + "</td><td><button name='sumSignButton'>" + sumSign + "</button></td><td><button id='signTime'>" + signTime + "</button></td><td id='class_id' style='display:none;'>" + class_id + "</td></tr>";
+                        $("#table tbody").append(row);
+
+                    }
+                } else {
+                    alert("错误")
+                }
+            }
+        })
+    }
+
+    //绑定未来元素
+    $("#table").on("click","button[name='sumSignButton']",function () {
+        f2($(this).parent().parent().find("td[id='signId']").text(),$(this).parent().parent().find("td[id='class_id']").text());
+    })
+
+    $("#table").on("click","button[id='signTime']",function () {
+        let sign_id = $(this).parent().parent().find("td[id='signId']").text();
+        $.ajax({
+            url: "signTimeChange",
+            type: "POST",
+            data: {sign_id},
+            success: function (msg) {
+                let json = JSON.parse(msg);
+                if (json.flag == "success"){
+                    location.href="sign_info.html"
+                }
+            }
+        })
+    })
+
+    function f2(signId,classId) {
+        // var json=[
+        //     {"sign_id":"1", "teacher_id":12345, "class_id":2203, "sign_number":23543, "sign_name":"第一次数学签到", "sign_student":25, "sign_time":0}
+        // ];
+        if ($("#table2 tbody").find("td").length > 0)
+            $ ('#table2 tbody').empty();
+        $.ajax({
+            url:"signStudentInfo",
+            type:"POST",
+            data:{signId,classId},
+            success:function (msg) {
+                let json = JSON.parse(msg);
+                if(json.flag == "success"){
+                    let signStudentInfo = json.data;
+                    var i = 1;
+                    for (let s = 0;s<signStudentInfo.length;s++) {
+                        let name = signStudentInfo[s].Name;
+                        let Sid = signStudentInfo[s].Sid;
+                        let Id = signStudentInfo[s].ID;
+                        let sign = signStudentInfo[s].sign == 0?"未签到":"已签到";
+                        let row = "<tr><td>" + i++ + "</td><td>" + name + "</td><td>" + Sid + "</td><td>" + sign + "</td></tr>";
+                        $("#table2 tbody").append(row);
+                    }
+                }else{
+                    alert("错误")
+                }
+            }
+        })
+        // $.each(json,function (index,json) {
+        //     var row = "<tr><td>" + json.sign_id + "</td><td>" + json.teacher_id + "</td><td>" + json.class_id + "</td><td>" + json.sign_number + "</td><td>" + json.sign_name + "</td><td>" + json.sign_student + "</td><td>" + (json.sign_time == "0"?"进行中":"结束") + "</td></tr>";
+        //     $("#table tbody").append(row);
+        // })
+
+    }
+
+    f();
+
+
+
+</script>
+</html>

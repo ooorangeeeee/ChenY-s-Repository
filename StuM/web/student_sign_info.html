@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>班级信息</title>
+    <link rel="stylesheet" type="text/css" href="./addClass_files/reset.css">
+    <link rel="stylesheet" type="text/css" href="./addClass_files/thems.css">
+    <link rel="stylesheet" type="text/css" href="./addClass_files/responsive.css">
+    <link rel="stylesheet" type="text/css" href="./addClass_files/course.css">
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <style>
+        table{
+            border: black 1px solid;
+            background: black;
+        }
+        tr{
+            border: blue 1px solid;
+        }
+        th{
+            background: white;
+            padding: 5px;
+        }
+        td{
+            background: white;
+            padding: 5px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="header">
+    <div class="head clearfix">
+        <div class="logo">
+
+        </div>
+        <div class="nav_m" style="height:61px">
+            <div class="n_icon">导航栏</div>
+            <ul class="nav clearfix">
+                <li class="now">
+                    <a href="file:///D:/public/%E7%B4%A0%E6%9D%90/html/addClass.html">学生签到</a>
+                </li>
+                <li>
+                    <a href="Login.html" onclick="window.localStorage.clear()">退出登陆</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div style="padding: 40px 180px;">
+    <table id="table" style="float: left;">
+        <thead>
+            <tr>
+                <th>签到名称</th>
+                <th>班级</th>
+                <th>签到码</th>
+                <th>签到状态</th>
+                <th>签到</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+</body>
+<script>
+    function f() {
+        // var json=[
+        //     {"sign_id":"1", "teacher_id":12345, "class_id":2203, "sign_number":23543, "sign_name":"第一次数学签到", "sign_student":25, "sign_time":0}
+        // ];
+        let student = JSON.parse(localStorage.getItem("student"));
+        let studentId = student.ID
+        $.ajax({
+            url: "studentSign",
+            type: "POST",
+            data: {studentId},
+            success: function (msg) {
+                let json = JSON.parse(msg);
+                if (json.flag == "success") {
+                    let studentSignInfo = json.data;
+                    for (let s = 0; s < studentSignInfo.length; s++) {
+                        let signId = studentSignInfo[s].sign_id;
+                        let signName = studentSignInfo[s].sign_name;
+                        let className = studentSignInfo[s].className;
+                        let signNumber = studentSignInfo[s].sign_number;
+                        let check = studentSignInfo[s].check;
+                        let signTime = studentSignInfo[s].sign_time == 0 ? "进行中" : "已结束";
+                        localStorage.setItem(signId,studentSignInfo[s]);
+                        let row = "<tr><td id='signId'>" + signName + "</td><td>" + className + "</td><td id='signNumber'>" + signNumber + "</td><td>" + signTime + "</td><td><button name='check'>" + check + "</button></td><td id='sign_id' style='display:none;'>"+signId+"</td><td id='studentId' style='display:none;'>"+studentId+"</td></tr>";
+                        $("#table tbody").append(row);
+                    }
+                } else {
+                    alert("错误")
+                }
+            }
+        })
+    }
+
+    //绑定未来元素
+    $("#table").on("click","button[name='check']",function () {
+        let sign_id = $(this).parent().parent().find("td[id='sign_id']").text();
+        let studentId = $(this).parent().parent().find("td[id='studentId']").text();
+        let signNumber = $(this).parent().parent().find("td[id='signNumber']").text();
+        $.ajax({
+            url: "studentSignIn ",
+            type: "POST",
+            data: {sign_id,studentId,signNumber},
+            success: function (msg) {
+                let json = JSON.parse(msg);
+                if (json.flag == "success") {
+                    $(this).parent().parent().find("td[id='check']").text("已签到");
+                    location.href="student_sign_info.html";
+                } else {
+                    alert(json.data)
+                }
+            }
+        })
+    })
+
+    f();
+
+
+
+</script>
+</html>

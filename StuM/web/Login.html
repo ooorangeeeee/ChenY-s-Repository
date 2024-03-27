@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登陆</title>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <style>
+        #outLoginFrame{
+            width: 500px;
+            height: 400px;
+            margin-left: calc(50% - 250px);
+            margin-top: 200px;
+        }
+
+        #innerLoginFrame{
+            /*border: grey 2px solid;*/
+            width: 360px;
+            margin-left: 100px;
+            margin-top: 45px;
+            color: grey;
+            font-size: 25px;
+        }
+
+        input{
+            width: 220px;
+            height: 30px;
+        }
+
+        #rad input{
+            width: 17px;
+            height: 17px;
+            margin-left: 52px;
+            margin-bottom: 20px;
+        }
+        #rad{
+            font-size: 20px;
+        }
+
+
+    </style>
+</head>
+<body>
+<div id="outLoginFrame" style="border: grey 2px solid">
+    <h1 style="margin-left: 130px; margin-top: 40px;">学&nbsp;生&nbsp;管&nbsp;理&nbsp;系&nbsp;统</h1>
+    <div id="innerLoginFrame">
+        <form >
+        账户：<input type="text" style="font-size: 28px" id="userAccount" name="userAccount" class="myText"><br><br>
+        密码：<input type="password" style="font-size: 28px" id="userPassword" name="userPassword" class="myText"><br><br>
+        <div id="rad">
+            <input type="radio" name="user" value="s" checked="checked">学生
+            <input type="radio" name="user" value="t">老师
+        </div>
+        <button style="width: 140px;height: 30px; margin-left: 20px;" type="button" onclick="fun()">登陆</button>
+        <button href="register.html" type="button" style="width: 140px;height: 30px;">注册</button><br>
+        <span style="color: red;font-size: 15px;"id="tip"></span>
+        </form>
+    </div>
+</div>
+</body>
+<script>
+
+    function getRadioValue(args) {
+        let element = document.getElementsByName(args);
+        for (var i = 0; i < element.length;i++){
+            if (element[i].checked){
+                return element[i].value;
+            }
+        }
+    }
+
+    function fun() {
+        let userAccount = document.getElementById("userAccount").value;
+        let userPassword = document.getElementById("userPassword").value;
+        var rad = getRadioValue("user");
+        if (userAccount == null || userAccount.trim()===""){
+            document.getElementById("tip").innerHTML = "账户不能为空";
+            return false;
+        }
+        if (userPassword == null || userPassword.trim()===""){
+            document.getElementById("tip").innerHTML = "密码不能为空";
+            return false;
+        }
+
+        $.ajax({
+            url:"Login",
+            type:"POST",
+            data:{userAccount,userPassword,rad},
+            success:function (msg) {
+                let json = JSON.parse(msg);
+                if(json.flag == "success"){
+                    let user = json.data;
+                    if (rad=="s"){
+                        localStorage.setItem("student",JSON.stringify(user));
+                        location.href = "student_sign_info.html";
+                    }else{
+                        localStorage.setItem("teacher",JSON.stringify(user))
+                        location.href = "Class_info.html";
+                    }
+                }else{
+                    $("#tip").text(json.data);
+                }
+            }
+        });
+
+    }
+</script>
+
+</html>

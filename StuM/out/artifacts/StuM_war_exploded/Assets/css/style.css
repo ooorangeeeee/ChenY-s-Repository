@@ -1,0 +1,29 @@
+﻿@charset "utf-8";
+* {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+a,
+img {
+	border: 0;
+}
+
+.container {
+	margin-top: 200px;
+	width: 100%;
+	position: fixed;
+	position: absolute;
+	height: 300px;
+	text-align: center;
+	margin-left: 0px;
+	margin-top: 5%;
+}
+
+.container h3 span {
+	color: #000;
+	font-size: 40px;
+	line-height: 40px;
+	text-shadow: #000000;
+}

@@ -1,0 +1,176 @@
+input {
+	border: 1px solid #ccc;
+	padding: 7px 0px;
+	border-radius: 3px;
+	/*css3属性IE不支持*/
+	padding-left: 5px;
+	style="height: 2em; 
+ font-size: 1em;
+	margin: 1em;
+	padding: 0.8em 0.5em;
+}
+
+#submit,
+#cancel {
+	width: 100px;
+	background: #00bfff;
+	font-weight: bold;
+	margin: 100px;
+}
+
+
+/* Border styles */
+
+#table-1 thead,
+#table-1 tr,
+#randTxt thead,
+#randTxt tr,
+#classList thead,
+#classList tr 
+#attenceRecord thead,
+#attenceRecord tr{
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: rgb(230, 189, 189);
+}
+
+#table-1,
+#randTxt,
+#classList,
+#attenceRecord {
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: rgb(230, 189, 189);
+}
+
+
+/* Padding and font style */
+
+#table-1 td,
+#table-1 th,
+#randTxt td,
+#randTxt th,
+#classList td,
+#classList th,
+#attenceRecord td,
+#attenceRecord th {
+	white-space: nowrap;
+	padding: 5px 40px;
+	font-size: 15px;
+	font-family: Verdana;
+	color: rgb(177, 106, 104);
+	text-align: center;
+}
+
+
+/* Alternating background colors */
+
+#table-1 tr:nth-child(even) {
+	background: rgb(238, 211, 210)
+}
+
+#table-1 tr:nth-child(odd) {
+	background: #FFF
+}
+
+#classList tr:nth-child(even) {
+	background: rgb(238, 211, 210)
+}
+
+#classList tr:nth-child(odd) {
+	background: #FFF
+}
+
+#attenceRecord tr:nth-child(even) {
+	background: rgb(238, 211, 210)
+}
+
+#attenceRecord tr:nth-child(odd) {
+	background: #FFF
+}
+
+#inClassExcel {
+	position: relative;
+	display: inline-block;
+	background: #D0EEFF;
+	border: 1px solid #99D3F5;
+	border-radius: 4px;
+	margin-top: 22px;
+	padding: 4px 12px;
+	overflow: hidden;
+	color: #1E88C7;
+	text-decoration: none;
+	text-indent: 0;
+	line-height: 20px;
+}
+
+#inClassExcel input {
+	position: absolute;
+	font-size: 25px;
+	right: 0;
+	top: 0;
+	opacity: 0;
+}
+
+#inClassExcel:hover {
+	background: #AADFFD;
+	border-color: #78C3F3;
+	color: #004974;
+	text-decoration: none;
+}
+
+#classList {
+	margin: 30px;
+}
+
+.myButton {
+	-moz-box-shadow: inset 0px 1px 3px 0px #3dc21b;
+	-webkit-box-shadow: inset 0px 1px 3px 0px #3dc21b;
+	box-shadow: inset 0px 1px 3px 0px #3dc21b;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #44c767), color-stop(1, #5cbf2a));
+	background: -moz-linear-gradient(top, #44c767 5%, #5cbf2a 100%);
+	background: -webkit-linear-gradient(top, #44c767 5%, #5cbf2a 100%);
+	background: -o-linear-gradient(top, #44c767 5%, #5cbf2a 100%);
+	background: -ms-linear-gradient(top, #44c767 5%, #5cbf2a 100%);
+	background: linear-gradient(to bottom, #44c767 5%, #5cbf2a 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#44c767', endColorstr='#5cbf2a', GradientType=0);
+	background-color: #44c767;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	border: 1px solid #18ab29;
+	display: inline-block;
+	cursor: pointer;
+	color: #ffffff;
+	font-family: Arial;
+	font-size: 15px;
+	font-weight: bold;
+	padding: 11px 23px;
+	text-decoration: none;
+	text-shadow: 0px -1px 0px #2f6627;
+}
+
+.myButton:hover {
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #5cbf2a), color-stop(1, #44c767));
+	background: -moz-linear-gradient(top, #5cbf2a 5%, #44c767 100%);
+	background: -webkit-linear-gradient(top, #5cbf2a 5%, #44c767 100%);
+	background: -o-linear-gradient(top, #5cbf2a 5%, #44c767 100%);
+	background: -ms-linear-gradient(top, #5cbf2a 5%, #44c767 100%);
+	background: linear-gradient(to bottom, #5cbf2a 5%, #44c767 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#5cbf2a', endColorstr='#44c767', GradientType=0);
+	background-color: #5cbf2a;
+}
+
+.myButton:active {
+	position: relative;
+	top: 1px;
+}
+
+#clickAttence {
+	width: 100%;
+	height: 999px;
+	background: #F0F0F0;
+	text-align: center;
+	box-shadow: 5px 5px 5px #000;
+	border-radius: 33px;
+}

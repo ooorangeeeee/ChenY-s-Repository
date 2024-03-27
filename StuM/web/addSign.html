@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<!-- saved from url=(0055)file:///D:/public/%E7%B4%A0%E6%9D%90/html/addClass.html -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+		<title>创建签到</title>
+		<link rel="stylesheet" type="text/css" href="./addClass_files/reset.css">
+		<link rel="stylesheet" type="text/css" href="./addClass_files/thems.css">
+		<link rel="stylesheet" type="text/css" href="./addClass_files/responsive.css">
+		<link rel="stylesheet" type="text/css" href="./addClass_files/course.css">
+	<script src="js/jquery-3.4.1.min.js"></script>
+	</head>
+
+	<body>
+		
+		<div class="header">
+			<div class="head clearfix">
+				<div class="logo">
+					
+				</div>
+				<div class="nav_m" style="height:61px">
+					<div class="n_icon">导航栏</div>
+					<ul class="nav clearfix">
+						<li>
+							<a href="file:///D:/public/%E7%B4%A0%E6%9D%90/html/index.html">班级信息</a>
+						</li>
+                        <li>
+                            <a href="file:///D:/public/%E7%B4%A0%E6%9D%90/html/addClass.html">添加班级</a>
+                        </li>
+						<li class="now">
+							<a href="file:///D:/public/%E7%B4%A0%E6%9D%90/html/addClass.html">创建签到</a>
+						</li>
+						<li>
+							<a href="file:///D:/public/%E7%B4%A0%E6%9D%90/html/addClass.html">查看签到</a>
+						</li>
+						<li>
+							<a href="file:///D:/public/%E7%B4%A0%E6%9D%90/html/contact.html">退出登陆</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="wrap" style="
+    float: right;
+">
+			<div class="s_works" style="margin-top: 10px;">
+				<div style="background: deepskyblue;padding: 0.5em 3em;">
+					<h1>添加签到</h1>
+				</div>
+				<div style="font-size: 1.5em;/* margin-left: 4em; */padding: 2em 0;">
+					<a>签到码：</a><br>
+					<input type="text" placeholder="请输入签到码" size="150" style="margin: 30px;" id="signNumber"><br>
+					<a>签到班级ID:</a><br>
+					<input type="text" placeholder="请输入签到班级ID" size="150" style="margin: 30px;" id="classId"><br>
+					<a>签到备注:</a><br>
+					<input type="text" placeholder="请输入签到备注" size="150" style="margin: 30px;" id="signName"><br>
+
+				</div>
+				<div style="margin-left: 350px; margin-top: -60px;">
+					<a style="margin-left: -260px;">
+						<button type="button" onclick="f()">添加</button>
+					</a>
+				</div>
+			</div>
+		</div>
+</body>
+<script>
+    function f() {
+        // var json=[
+        //     {"sign_id":"1", "teacher_id":12345, "class_id":2203, "sign_number":23543, "sign_name":"第一次数学签到", "sign_student":25, "sign_time":0}
+        // ];
+        let teacher = JSON.parse(localStorage.getItem("teacher"));
+        let teacherId = teacher.Tid;
+        let classId = $("#classId").val();
+        let sign_number = $("#signNumber").val();
+        let signName = $("#signName").val();
+        $.ajax({
+            url: "addSign",
+            type: "POST",
+            data: {teacherId,classId,sign_number,signName},
+            success: function (msg) {
+                let json = JSON.parse(msg);
+                if (json.flag == "success") {
+                    alert("添加成功")
+                    $("#classId").val("");
+                    $("#signNumber").val("");
+                    $("#signName").val("");
+                } else {
+                    alert(json.data)
+                }
+            }
+        })
+    }
+</script>
+</html>
